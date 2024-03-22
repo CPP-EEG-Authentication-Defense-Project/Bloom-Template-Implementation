@@ -1,6 +1,6 @@
-# Utility Package Template
+# Bloom Template Implementation
 
-This repository is used as a template for the structure to use for a Python-based utility package.
+This repository contains an implementation of an EEG template generation backend, using [Bloom Filters](https://w.wiki/39oG).
 
 ## Development
 
