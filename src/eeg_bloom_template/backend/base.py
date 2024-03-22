@@ -11,6 +11,9 @@ class BaseBloomFilterHashBackend(abc.ABC):
     """
     _implementations: typing.Dict[str, typing.Type['BaseBloomFilterHashBackend']] = {}
 
+    def __init__(self, **kwargs):
+        pass
+
     @abc.abstractmethod
     def run_hash(self, data: bytes) -> int:
         """
@@ -29,7 +32,7 @@ class BaseBloomFilterHashBackend(abc.ABC):
         :returns: The hash code produced.
         """
         if isinstance(data, int):
-            # Avoid integers, as they are hashed as themselves
+            # Enforce only float data
             data = data + 0.1
         data_bytes = struct.pack('f', data)
         return self.run_hash(data_bytes)
@@ -52,3 +55,7 @@ class BaseBloomFilterHashBackend(abc.ABC):
         # Register new subclasses
         super().__init_subclass__(**kwargs)
         BaseBloomFilterHashBackend._implementations[cls.__name__.lower()] = cls
+
+    def __call__(self, data: typing.Union[int, float]) -> int:
+        # In order to be compatible with the bloom filter implementation, the backend must be callable.
+        return self.hash_data(data)
