@@ -3,10 +3,10 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = ""
+name = "eeg_bloom_template"
 version = "0.0.1"
 authors = [
-
+    { name="Cristopher Hernandez", email="22552070+CristopherH95@users.noreply.github.com" },
 ]
 description = ""
 readme = "README.md"
@@ -16,7 +16,8 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 dependencies = [
-
+    "rbloom~=1.5.0",
+    "mmh3~=4.1.0"
 ]
 
 [project.optional-dependencies]
