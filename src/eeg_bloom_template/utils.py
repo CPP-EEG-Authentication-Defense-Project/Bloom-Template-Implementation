@@ -1,10 +1,10 @@
 import typing
 
 
-D = typing.TypeVar('D')
+C = typing.TypeVar('C', bound=typing.Collection)
 
 
-def iter_ratio_slices(iterable_data: typing.Collection[D], slice_ratio: float) -> typing.Iterator[typing.Collection[D]]:
+def iter_ratio_slices(iterable_data: C, slice_ratio: float) -> typing.Iterator[C]:
     """
     Iterate over a given collection of data using the given ratio to define the proportional size of each slice
     to be yielded.
