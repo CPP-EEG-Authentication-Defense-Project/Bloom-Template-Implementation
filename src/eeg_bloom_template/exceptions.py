@@ -1,0 +1,2 @@
+class InvalidImplementation(Exception):
+    pass

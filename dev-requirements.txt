@@ -16,6 +16,8 @@ invoke==2.2.0
     # via eeg_bloom_template (pyproject.toml)
 mmh3==4.1.0
     # via eeg_bloom_template (pyproject.toml)
+numpy==1.26.4
+    # via eeg_bloom_template (pyproject.toml)
 packaging==24.0
     # via build
 pip-tools==7.3.0

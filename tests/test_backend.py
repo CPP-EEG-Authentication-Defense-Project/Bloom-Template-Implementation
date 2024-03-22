@@ -7,12 +7,7 @@ from eeg_bloom_template.backend.mmh3_backend import MMH3BloomFilterBackend
 class BackendTestCase(unittest.TestCase):
     def test_fnv_backend(self):
         test_value = 42
-        expected = int(
-            '0x37b71b74346361a5f15aeb81947009623463d58a26809f44747eb805107'
-            '3cc7b4cccddd9f8385609f056f97df4be16a237b23f393b81fc6dceb63999'
-            '7b52bcd91c5914713b4e6caeb2d161f74cf993f',
-            16
-        )
+        expected = 140121297216442123210317922797979092383
         backend = FNVBloomFilterBackend()
 
         hashed_value = backend.hash_data(test_value)
