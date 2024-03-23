@@ -12,8 +12,8 @@ class EEGTemplateDataChecker:
     value is used to indicate at which point the EEG data is to be considered a non-match for the template.
     """
     def __init__(self, template: BaseEEGTemplateData, tolerance: float):
-        if not 0 < tolerance <= 1:
-            raise ValueError(f'Tolerance must be between 0 and 1 (got {tolerance}).')
+        if not 0 <= tolerance <= 1:
+            raise ValueError(f'Tolerance must be between 0 and 1 inclusive (got {tolerance}).')
         self.template = template
         self.tolerance = tolerance
 
