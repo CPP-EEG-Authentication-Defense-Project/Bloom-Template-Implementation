@@ -14,7 +14,7 @@ def iter_ratio_slices(iterable_data: C, slice_ratio: float) -> typing.Iterator[C
     :returns: An iterator over the slices of the given collection of data.
     """
     if not 0 < slice_ratio <= 1:
-        raise ValueError(f'Slice ratio must be between 0 and 1 (got {slice_ratio}).')
+        raise ValueError(f'Slice ratio must be between 0 and 1, upper bound inclusive (got {slice_ratio}).')
     iterable_length = len(iterable_data)
     slice_size = int(slice_ratio * iterable_length)
 
