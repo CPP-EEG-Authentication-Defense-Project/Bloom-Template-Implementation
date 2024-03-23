@@ -37,12 +37,12 @@ class EEGTemplateDataCheckerTestCase(unittest.TestCase):
         # Test data B is half equal to test data A and the tolerance is 0.5, so result should be that the two are
         # considered equal by the checker.
         test_data_a = np.random.rand(10)
-        test_data_b = np.concatenate((test_data_a[0:5], np.random.rand(5)))
+        test_data_b = [test_data_a[0:5], np.random.rand(5)]
         test_bloom_filters = self._make_test_bloom_filter(test_data_a)
-        test_template = DummyEEGTemplateData(test_bloom_filters, 1)
+        test_template = DummyEEGTemplateData(test_bloom_filters, 0.5)
         checker = EEGTemplateDataChecker(test_template, 0.5)
 
-        equality_check = checker.check([test_data_b])
+        equality_check = checker.check(test_data_b)
 
         self.assertTrue(equality_check)
 

@@ -27,7 +27,7 @@ class EEGTemplateDataChecker:
         hits = 0
         iterations = 0
         filter_idx = 0
-        number_of_filters = len(self.template.bloom_filters)
+        number_of_filters = len(self.template.bloom_filters) - 1
 
         for segment in iter_ratio_slices(eeg_data, self.template.segment_ratio):
             new_hits = self._check_segment_against_filter(segment, self.template.bloom_filters[filter_idx])
