@@ -1,0 +1,28 @@
+import typing
+import numpy as np
+
+from . import base, engine, comparison, backend
+
+
+class EEGTemplate(base.BaseEEGTemplateData):
+    @classmethod
+    def make_template(cls,
+                      feature_data: typing.List[np.ndarray],
+                      hash_backend: backend.BaseBloomFilterHashBackend,
+                      segment_ratio: float,
+                      false_positive_ratio: float) -> 'EEGTemplate':
+        """
+        Generates an EEG template instance using given feature data, a hashing backend, segment ratio, and false
+        positive rate.
+
+        :param feature_data: The processed feature data to use to create the template.
+        :param hash_backend: The hash backend to use for the Bloom Filters in the template.
+        :param segment_ratio: The segment ratio to use in the template.
+        :param false_positive_ratio: The false positive rate to use in the Bloom Filters.
+        :returns: The template instance.
+        """
+        if not 0 < false_positive_ratio < 1:
+            raise ValueError(f'False positive ratio must be between 0 and 1 (got {false_positive_ratio}).')
+        data_engine = engine.EEGBloomFilterTemplateEngine(hash_backend, segment_ratio, false_positive_ratio)
+        template_data = data_engine.create_template_data(feature_data)
+        return cls(bloom_filters=template_data, segment_ratio=segment_ratio)
