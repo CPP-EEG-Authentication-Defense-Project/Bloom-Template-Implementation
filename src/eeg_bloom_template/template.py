@@ -8,6 +8,9 @@ class EEGTemplate(base.BaseEEGTemplateData):
     """
     EEG template implementation, based on bloom filters.
     """
+    def __str__(self):
+        return f'Template: {len(self.bloom_filters)} filters; {self.segment_ratio} segment ratio'
+
     @classmethod
     def make_template(cls,
                       feature_data: typing.List[np.ndarray],
