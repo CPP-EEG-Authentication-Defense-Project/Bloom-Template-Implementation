@@ -15,7 +15,7 @@ class BaseBloomFilterHashBackend(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def run_hash(self, data: bytes) -> int:
+    def run_hash_function(self, data: bytes) -> int:
         """
         Executes a hash function on the given data, returning an integer hash code.
 
@@ -35,7 +35,7 @@ class BaseBloomFilterHashBackend(abc.ABC):
             # Enforce only float data
             data = data + 0.1
         data_bytes = struct.pack('f', data)
-        return self.run_hash(data_bytes)
+        return self.run_hash_function(data_bytes)
 
     @classmethod
     def get_implementation(cls, implementation_key: str) -> typing.Type['BaseBloomFilterHashBackend']:

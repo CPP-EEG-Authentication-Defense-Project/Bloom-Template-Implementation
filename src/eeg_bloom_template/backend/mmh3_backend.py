@@ -12,7 +12,7 @@ class MMH3BloomFilterBackend(BaseBloomFilterHashBackend):
         super().__init__()
         self._seed = seed
 
-    def run_hash(self, data: bytes) -> int:
+    def run_hash_function(self, data: bytes) -> int:
         hasher = mmh3.mmh3_x64_128(seed=self._seed)
         hasher.update(data)
         return hasher.sintdigest()

@@ -11,7 +11,7 @@ class FNVBloomFilterBackend(BaseBloomFilterHashBackend):
     FNV_PRIME_128 = 0x0000000001000000000000000000013B
     FNV_OFFSET_128 = 0x6c62272e07bb014262b821756295c58d
 
-    def run_hash(self, data: bytes) -> int:
+    def run_hash_function(self, data: bytes) -> int:
         hash_value = self.FNV_OFFSET_128
 
         for byte_value in data:

@@ -7,7 +7,7 @@ from eeg_bloom_template.engine import EEGBloomFilterTemplateEngine
 
 
 class DummyBloomFilterHashBackend(BaseBloomFilterHashBackend):
-    def run_hash(self, data: bytes) -> int:
+    def run_hash_function(self, data: bytes) -> int:
         return hash(data)
 
 
