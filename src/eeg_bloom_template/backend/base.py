@@ -54,7 +54,17 @@ class BaseBloomFilterHashBackend(abc.ABC):
     def __init_subclass__(cls, **kwargs):
         # Register new subclasses
         super().__init_subclass__(**kwargs)
-        BaseBloomFilterHashBackend._implementations[cls.__name__.lower()] = cls
+        BaseBloomFilterHashBackend._implementations[cls.get_implementation_key(cls)] = cls
+
+    @classmethod
+    def get_implementation_key(cls, implementation: typing.Type['BaseBloomFilterHashBackend']) -> str:
+        """
+        Retrieves the key to use for retrieving the given implementation type at runtime from the subclass registry.
+
+        :param implementation: The implementation (i.e., the type) to retrieve the implementation key from.
+        :returns: The implementation key.
+        """
+        return implementation.__name__.lower()
 
     def __call__(self, data: typing.Union[int, float]) -> int:
         # In order to be compatible with the bloom filter implementation, the backend must be callable.
