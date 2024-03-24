@@ -24,16 +24,6 @@ class BaseBloomFilterHashBackend(abc.ABC):
         """
         pass
 
-    @property
-    @abc.abstractmethod
-    def hash_function_name(self) -> str:
-        """
-        Retrieves the name to use for the hash function backend. This is used for equality checks.
-
-        :returns: The hash function name.
-        """
-        pass
-
     def hash_data(self, data: typing.Union[int, float]) -> int:
         """
         Hashes input data.
@@ -81,4 +71,4 @@ class BaseBloomFilterHashBackend(abc.ABC):
         return self.hash_data(data)
 
     def __eq__(self, other: 'BaseBloomFilterHashBackend') -> bool:
-        return self.hash_function_name == other.hash_function_name
+        return self.__class__.__name__ == other.__class__.__name__

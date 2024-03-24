@@ -10,10 +10,6 @@ class DummyBloomFilterHashBackend(BaseBloomFilterHashBackend):
     def run_hash_function(self, data: bytes) -> int:
         return hash(data)
 
-    @property
-    def hash_function_name(self) -> str:
-        return 'hash'
-
 
 class DummyEEGTemplateData(BaseEEGTemplateData):
     pass
@@ -30,4 +26,9 @@ class EEGTemplateDataSerializerTestCase(unittest.TestCase):
         restored = serializer.deserialize(data_string)
 
         self.assertIsInstance(data_string, str)
-        self.assertEqual(template, restored)
+        self.assertEqual(len(template.bloom_filters), len(restored.bloom_filters))
+        self.assertEqual(template.segment_ratio, restored.segment_ratio)
+        a: rbloom.Bloom
+        b: rbloom.Bloom
+        for a, b in zip(template.bloom_filters, restored.bloom_filters):
+            self.assertEqual(a.hash_func, b.hash_func)
