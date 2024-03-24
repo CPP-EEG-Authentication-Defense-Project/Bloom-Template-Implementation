@@ -9,6 +9,10 @@ class DummyHashBackend(backend.BaseBloomFilterHashBackend):
     def run_hash_function(self, data: bytes) -> int:
         return hash(data)
 
+    @property
+    def hash_function_name(self):
+        return 'hash'
+
 
 class EEGTemplateTestCase(unittest.TestCase):
     def test_make_template(self):
