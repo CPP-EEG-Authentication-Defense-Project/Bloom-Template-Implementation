@@ -5,6 +5,9 @@ from . import base, engine, comparison, backend
 
 
 class EEGTemplate(base.BaseEEGTemplateData):
+    """
+    EEG template implementation, based on bloom filters.
+    """
     @classmethod
     def make_template(cls,
                       feature_data: typing.List[np.ndarray],
@@ -26,3 +29,14 @@ class EEGTemplate(base.BaseEEGTemplateData):
         data_engine = engine.EEGBloomFilterTemplateEngine(hash_backend, segment_ratio, false_positive_ratio)
         template_data = data_engine.create_template_data(feature_data)
         return cls(bloom_filters=template_data, segment_ratio=segment_ratio)
+
+    def compare(self, data: typing.List[np.ndarray]) -> comparison.ComparisonResult:
+        """
+        Compares the current template against a given matrix of EEG feature data. This is essentially a wrapper
+        around the EEG template data checker class implementation.
+
+        :param data: The EEG feature data to compare the template against.
+        :returns: The comparison result.
+        """
+        checker = comparison.EEGTemplateDataChecker(self)
+        return checker.check(data)
