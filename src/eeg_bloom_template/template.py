@@ -1,7 +1,7 @@
 import typing
 import numpy as np
 
-from . import base, engine, comparison, backend
+from . import base, engine, comparison, backend, serialization
 
 
 class EEGTemplate(base.BaseEEGTemplateData):
@@ -40,3 +40,26 @@ class EEGTemplate(base.BaseEEGTemplateData):
         """
         checker = comparison.EEGTemplateDataChecker(self)
         return checker.check(data)
+
+    def serialize(self) -> str:
+        """
+        Wrapper around the instantiation and usage of a serializer class, which returns the current EEG template
+        in a serialized string format.
+
+        :returns: The EEG template, as a string.
+        """
+        serializer = serialization.EEGTemplateDataSerializer(self.__class__)
+        return serializer.serialize(self)
+
+    @classmethod
+    def deserialize(cls, data: str) -> 'EEGTemplate':
+        """
+        Wrapper around the instantiation and usage of a serializer class, which returns an EEG template instance
+        from a serialized data string.
+
+        :param data: The data string containing serialized EEG template data.
+        :returns: The EEG template instance, instantiated from the data string.
+        :raises InvalidSerializationFormat: If the data string is in the wrong format for deserialization.
+        """
+        serializer = serialization.EEGTemplateDataSerializer(cls)
+        return serializer.deserialize(data)
