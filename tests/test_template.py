@@ -40,3 +40,17 @@ class EEGTemplateTestCase(unittest.TestCase):
         self.assertIsInstance(comparison_result, comparison.ComparisonResult)
         self.assertEqual(comparison_result.elements_total, 5)
         self.assertEqual(comparison_result.hit_ratio, 1)
+
+    def test_serialization(self):
+        dummy_data = [np.random.rand(5) for _ in range(10)]
+        hash_backend = DummyHashBackend()
+
+        eeg_template = template.EEGTemplate.make_template(
+            dummy_data, hash_backend, 0.5, 0.01
+        )
+
+        serialized = eeg_template.serialize()
+        deserialized = template.EEGTemplate.deserialize(serialized)
+
+        self.assertIsInstance(serialized, str)
+        self.assertIsInstance(deserialized, template.EEGTemplate)
