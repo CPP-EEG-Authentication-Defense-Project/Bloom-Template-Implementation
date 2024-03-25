@@ -1,5 +1,5 @@
 from .base import BaseBloomFilterHashBackend
-from ..utils import convert_unsigned_128_to_signed
+from ..utils.conversion import convert_unsigned_128_to_signed
 
 
 class FNVBloomFilterBackend(BaseBloomFilterHashBackend):
@@ -20,3 +20,7 @@ class FNVBloomFilterBackend(BaseBloomFilterHashBackend):
 
         # Use 128-bit signed value, as this is the acceptable range for the Bloom filter implementation.
         return convert_unsigned_128_to_signed(hash_value)
+
+    @property
+    def hash_function_name(self) -> str:
+        return 'FNV'

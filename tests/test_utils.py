@@ -1,6 +1,7 @@
 import unittest
 
-from eeg_bloom_template.utils import iter_ratio_slices, convert_unsigned_128_to_signed
+from eeg_bloom_template.utils.iteration import iter_ratio_slices
+from eeg_bloom_template.utils.conversion import convert_unsigned_128_to_signed
 
 
 class UtilsTestCase(unittest.TestCase):

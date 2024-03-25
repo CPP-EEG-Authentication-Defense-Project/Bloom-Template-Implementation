@@ -16,3 +16,7 @@ class MMH3BloomFilterBackend(BaseBloomFilterHashBackend):
         hasher = mmh3.mmh3_x64_128(seed=self._seed)
         hasher.update(data)
         return hasher.sintdigest()
+
+    @property
+    def hash_function_name(self) -> str:
+        return 'mmh3'

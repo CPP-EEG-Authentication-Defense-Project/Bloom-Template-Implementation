@@ -3,7 +3,7 @@ import typing
 import numpy as np
 
 from .backend import BaseBloomFilterHashBackend
-from .utils import iter_ratio_slices
+from .utils.iteration import iter_ratio_slices
 
 
 class EEGBloomFilterTemplateEngine:
