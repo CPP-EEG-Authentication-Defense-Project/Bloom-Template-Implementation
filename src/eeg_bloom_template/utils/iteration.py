@@ -1,4 +1,5 @@
 import typing
+import math
 
 
 C = typing.TypeVar('C', bound=typing.Collection)
@@ -16,7 +17,12 @@ def iter_ratio_slices(iterable_data: C, slice_ratio: float) -> typing.Iterator[C
     if not 0 < slice_ratio <= 1:
         raise ValueError(f'Slice ratio must be between 0 and 1, upper bound inclusive (got {slice_ratio}).')
     iterable_length = len(iterable_data)
-    slice_size = int(slice_ratio * iterable_length)
+    # If the number is too small, take the ceiling to avoid the slice size being 0
+    slice_size_raw = slice_ratio * iterable_length
+    if slice_size_raw < 1:
+        slice_size = math.ceil(slice_size_raw)
+    else:
+        slice_size = int(slice_size_raw)
 
     for i in range(0, iterable_length, slice_size):
         slice_end = min(i + slice_size, iterable_length)
