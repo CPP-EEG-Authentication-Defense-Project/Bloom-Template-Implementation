@@ -62,8 +62,12 @@ class EEGTemplateDataChecker:
         iterations = 0
         filter_idx = 0
         max_filter_idx = len(self.template.bloom_filters) - 1
+        data_to_check = eeg_data
+        if not self.template.row_wise:
+            transposed_data = np.array(data_to_check).transpose()
+            data_to_check = list(transposed_data)
 
-        for segment in iter_ratio_slices(eeg_data, self.template.segment_ratio):
+        for segment in iter_ratio_slices(data_to_check, self.template.segment_ratio):
             new_hits = self._check_segment_against_filter(segment, self.template.bloom_filters[filter_idx])
             hits += new_hits
             filter_idx = min(filter_idx + 1, max_filter_idx)
