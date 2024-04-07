@@ -28,6 +28,18 @@ class EEGTemplateTestCase(unittest.TestCase):
         self.assertIsInstance(eeg_template.bloom_filters[0], rbloom.Bloom)
         self.assertIsInstance(eeg_template.bloom_filters[1], rbloom.Bloom)
 
+    def test_make_column_template(self):
+        # Order of dimensions is flipped from row-wise template, result should be same number of filters.
+        dummy_data = [np.random.rand(10) for _ in range(5)]
+        hash_backend = DummyHashBackend()
+
+        eeg_template = template.EEGTemplate.make_template(
+            dummy_data, hash_backend, 0.5, 0.01, row_wise=False
+        )
+
+        self.assertIsInstance(eeg_template.bloom_filters, list)
+        self.assertEqual(len(eeg_template.bloom_filters), 2)
+
     def test_comparison(self):
         dummy_data = [np.random.rand(5)]
         bloom_filter = rbloom.Bloom(10, 0.01)
