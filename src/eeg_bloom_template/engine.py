@@ -17,17 +17,22 @@ class EEGBloomFilterTemplateEngine:
         self._segment_ratio = segment_ratio
         self._false_positive_rate = false_positive_rate
 
-    def create_template_data(self, data: typing.List[np.ndarray]) -> typing.List[rbloom.Bloom]:
+    def create_template_data(self, data: typing.List[np.ndarray], row_wise=True) -> typing.List[rbloom.Bloom]:
         """
         Creates data to be used for the EEG template, essentially a list of Bloom Filters which contain
         normalized data.
 
         :param data: The list of EEG data feature vectors to use to generate template data.
+        :param row_wise: A boolean indicating whether to process the data row-wise or column-wise.
         :returns: The list of Bloom Filters to be used for a template.
         """
         filters = []
+        array_to_process = data
+        if not row_wise:
+            transposed_data = np.array(array_to_process).transpose()
+            array_to_process = list(transposed_data)
 
-        for segment in iter_ratio_slices(data, self._segment_ratio):
+        for segment in iter_ratio_slices(array_to_process, self._segment_ratio):
             filters.append(self._generate_bloom_filter(segment))
 
         return filters

@@ -19,7 +19,8 @@ class EEGTemplateDataSerializerTestCase(unittest.TestCase):
     def test_serialize_data(self):
         template = DummyEEGTemplateData(
             [rbloom.Bloom(10, 0.01, DummyBloomFilterHashBackend())],
-            0.5
+            0.5,
+            row_wise=True
         )
         serializer = EEGTemplateDataSerializer(DummyEEGTemplateData)
         data_string = serializer.serialize(template)
@@ -28,6 +29,7 @@ class EEGTemplateDataSerializerTestCase(unittest.TestCase):
         self.assertIsInstance(data_string, str)
         self.assertEqual(len(template.bloom_filters), len(restored.bloom_filters))
         self.assertEqual(template.segment_ratio, restored.segment_ratio)
+        self.assertEqual(template.row_wise, restored.row_wise)
         a: rbloom.Bloom
         b: rbloom.Bloom
         for a, b in zip(template.bloom_filters, restored.bloom_filters):

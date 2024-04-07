@@ -19,6 +19,7 @@ class EEGTemplateDataSerializer(typing.Generic[D]):
     SERIALIZATION_ENCODING = 'utf-8'
     SERIALIZE_FILTER_KEY = 'filters'
     SERIALIZE_SEGMENT_RATIO_KEY = 'segment_ratio'
+    SERIALIZE_ROW_WISE_KEY = 'row_wise'
     SERIALIZED_FILTER_PATTERN = r'^(?P<filter_bytes>[^:]+):(?P<hash_backend>[a-z]+)$'
 
     def __init__(self, constructor: typing.Type[D]):
@@ -34,7 +35,8 @@ class EEGTemplateDataSerializer(typing.Generic[D]):
         """
         data_map = {
             self.SERIALIZE_FILTER_KEY: self._serialize_filters(data.bloom_filters),
-            self.SERIALIZE_SEGMENT_RATIO_KEY: data.segment_ratio
+            self.SERIALIZE_SEGMENT_RATIO_KEY: data.segment_ratio,
+            self.SERIALIZE_ROW_WISE_KEY: data.row_wise
         }
         return json.dumps(data_map)
 
@@ -52,7 +54,8 @@ class EEGTemplateDataSerializer(typing.Generic[D]):
         self.validate_serialized_data(parsed_data)
         bloom_filters = self._deserialize_filters(parsed_data[self.SERIALIZE_FILTER_KEY], **backend_kwargs)
         segment_ratio = float(parsed_data[self.SERIALIZE_SEGMENT_RATIO_KEY])
-        return self._constructor(bloom_filters=bloom_filters, segment_ratio=segment_ratio)
+        row_wise = bool(parsed_data[self.SERIALIZE_ROW_WISE_KEY])
+        return self._constructor(bloom_filters=bloom_filters, segment_ratio=segment_ratio, row_wise=row_wise)
 
     def validate_serialized_data(self, serialization_data: str):
         """
