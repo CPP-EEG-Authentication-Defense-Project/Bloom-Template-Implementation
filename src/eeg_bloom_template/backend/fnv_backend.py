@@ -1,5 +1,5 @@
 from .base import BaseBloomFilterHashBackend
-from ..utils.conversion import convert_unsigned_128_to_signed
+from ..utils.number_values import convert_unsigned_128_to_signed
 
 
 class FNVBloomFilterBackend(BaseBloomFilterHashBackend):
