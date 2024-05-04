@@ -1,7 +1,10 @@
 import unittest
+import unittest.mock
+import struct
 
 from eeg_bloom_template.backend.fnv_backend import FNVBloomFilterBackend
 from eeg_bloom_template.backend.mmh3_backend import MMH3BloomFilterBackend
+from eeg_bloom_template.backend.token_backend import TokenBackend
 
 
 class BackendTestCase(unittest.TestCase):
@@ -20,5 +23,20 @@ class BackendTestCase(unittest.TestCase):
         backend = MMH3BloomFilterBackend()
 
         hashed_value = backend.hash_data(test_value)
+
+        self.assertEqual(hashed_value, expected)
+
+    def test_token_backend(self):
+        test_value = 42.1
+        test_vector = [data for data in struct.pack('f', test_value)]
+        expected = sum(test_vector)
+        token_generator_path = 'eeg_bloom_template.utils.orthonormalization.TokenDataGenerator'
+        matrix_normalizer_path = 'eeg_bloom_template.utils.orthonormalization.TokenMatrixNormalization'
+
+        with unittest.mock.patch(token_generator_path):
+            with unittest.mock.patch(matrix_normalizer_path) as fake_normalizer:
+                fake_normalizer.return_value.normalize.return_value = test_vector
+                backend = TokenBackend('fake')
+                hashed_value = backend.hash_data(test_value)
 
         self.assertEqual(hashed_value, expected)
