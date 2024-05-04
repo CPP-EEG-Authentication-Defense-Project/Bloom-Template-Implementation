@@ -1,9 +1,8 @@
-import auth_token_normalization
 import typing
 import numpy as np
 
 from .base import BaseBloomFilterHashBackend
-from ..utils import number_values
+from ..utils import number_values, orthonormalization
 
 
 class TokenBackend(BaseBloomFilterHashBackend):
@@ -16,6 +15,8 @@ class TokenBackend(BaseBloomFilterHashBackend):
 
     def run_hash_function(self, data: bytes) -> int:
         data_vector = np.array([b for b in data])
-        normalized_vector = auth_token_normalization.normalize_data(data_vector, self._token)
+        token_data_generator = orthonormalization.TokenDataGenerator(self._token)
+        matrix_normalizer = orthonormalization.TokenMatrixNormalization(token_data_generator)
+        normalized_vector = matrix_normalizer.normalize(data_vector)
         data_sum = sum(normalized_vector)
         return number_values.clamp_value(data_sum, -2**127, 2**127)
