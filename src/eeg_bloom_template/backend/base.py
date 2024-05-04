@@ -33,7 +33,7 @@ class BaseBloomFilterHashBackend(abc.ABC):
         """
         if isinstance(data, int):
             # Enforce only float data
-            data = data + 0.1
+            data = float(data)
         data_bytes = struct.pack('f', data)
         return self.run_hash_function(data_bytes)
 

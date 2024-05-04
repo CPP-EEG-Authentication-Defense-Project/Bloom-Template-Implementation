@@ -13,3 +13,15 @@ def convert_unsigned_128_to_signed(unsigned_128: int) -> int:
         signed_value = -(signed_value ^ max_signed) - 1
 
     return signed_value
+
+
+def clamp_value(value: int, min_value: int, max_value: int) -> int:
+    """
+    Clamps a given value between a minimum and a maximum value.
+
+    :param value: The value to clamp.
+    :param min_value: The minimum value.
+    :param max_value: The maximum value.
+    :returns: The clamped value.
+    """
+    return max(min(max_value, value), min_value)
