@@ -30,13 +30,10 @@ class BackendTestCase(unittest.TestCase):
         test_value = 42.1
         test_vector = [data for data in struct.pack('f', test_value)]
         expected = sum(test_vector)
-        token_generator_path = 'eeg_bloom_template.utils.orthonormalization.TokenDataGenerator'
-        matrix_normalizer_path = 'eeg_bloom_template.utils.orthonormalization.TokenMatrixNormalization'
 
-        with unittest.mock.patch(token_generator_path):
-            with unittest.mock.patch(matrix_normalizer_path) as fake_normalizer:
-                fake_normalizer.return_value.normalize.return_value = test_vector
-                backend = TokenBackend('fake')
-                hashed_value = backend.hash_data(test_value)
+        with unittest.mock.patch('eeg_bloom_template.utils.orthonormalization.normalize_cached') as fake_normalize:
+            fake_normalize.return_value = test_vector
+            backend = TokenBackend('fake')
+            hashed_value = backend.hash_data(test_value)
 
         self.assertEqual(hashed_value, expected)
