@@ -15,9 +15,7 @@ class TokenBackend(BaseBloomFilterHashBackend):
 
     def run_hash_function(self, data: bytes) -> int:
         data_vector = np.array([b for b in data])
-        token_data_generator = orthonormalization.TokenDataGenerator(self._token)
-        matrix_normalizer = orthonormalization.TokenMatrixNormalization(token_data_generator)
-        normalized_vector = matrix_normalizer.normalize(data_vector)
+        normalized_vector = orthonormalization.normalize_cached(self._token, data_vector)
         data_sum = np.sum(normalized_vector)
         clamped_sum = number_values.clamp_value(data_sum, -2**127, 2**127)
         # Ensure an int is returned
