@@ -1,8 +1,34 @@
+import functools
 import secrets
 import typing
 import random
 import sys
 import numpy as np
+
+
+def normalize_cached(token: str, vector_data: np.ndarray) -> np.ndarray:
+    """
+    Mimics the token normalization procedure, but using cached token matrix generation.
+
+    :param token: The token to use during normalization.
+    :param vector_data: The vector data to use during normalization.
+    :returns: The normalized vector.
+    """
+    token_matrix = _generate_token_matrix_cached(token, len(vector_data))
+    return TokenMatrixNormalization.mix_token_matrix(vector_data, token_matrix)
+
+
+@functools.lru_cache(maxsize=32)
+def _generate_token_matrix_cached(token: str, dimension: int) -> np.ndarray:
+    """
+    Wraps normal operation of the token matrix generator, with the added benefit of caching return values.
+
+    :param token: The token to use to seed the generator.
+    :param dimension: The dimension of the target matrix.
+    :returns: The generated matrix.
+    """
+    generator = TokenDataGenerator(token)
+    return generator.generate_matrix(dimension)
 
 
 class TokenDataGenerator:
