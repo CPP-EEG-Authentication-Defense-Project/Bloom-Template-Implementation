@@ -18,5 +18,7 @@ class TokenBackend(BaseBloomFilterHashBackend):
         token_data_generator = orthonormalization.TokenDataGenerator(self._token)
         matrix_normalizer = orthonormalization.TokenMatrixNormalization(token_data_generator)
         normalized_vector = matrix_normalizer.normalize(data_vector)
-        data_sum = sum(normalized_vector)
-        return number_values.clamp_value(data_sum, -2**127, 2**127)
+        data_sum = np.sum(normalized_vector)
+        clamped_sum = number_values.clamp_value(data_sum, -2**127, 2**127)
+        # Ensure an int is returned
+        return round(clamped_sum)
