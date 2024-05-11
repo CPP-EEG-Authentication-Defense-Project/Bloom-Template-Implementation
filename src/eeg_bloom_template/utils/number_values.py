@@ -1,3 +1,6 @@
+import typing
+
+
 def convert_unsigned_128_to_signed(unsigned_128: int) -> int:
     """
     Converts a given unsigned 128-bit integer into a signed 128-bit integer, wrapping around into negative
@@ -15,7 +18,9 @@ def convert_unsigned_128_to_signed(unsigned_128: int) -> int:
     return signed_value
 
 
-def clamp_value(value: int, min_value: int, max_value: int) -> int:
+def clamp_value(value: typing.Union[int, float],
+                min_value: typing.Union[int, float],
+                max_value: typing.Union[int, float]) -> typing.Union[int, float]:
     """
     Clamps a given value between a minimum and a maximum value.
 
