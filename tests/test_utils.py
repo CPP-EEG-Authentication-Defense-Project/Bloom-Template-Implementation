@@ -5,7 +5,7 @@ import numpy as np
 
 from eeg_bloom_template.utils.iteration import iter_ratio_slices
 from eeg_bloom_template.utils.number_values import convert_unsigned_128_to_signed
-from eeg_bloom_template.utils.orthonormalization import TokenDataGenerator, TokenMatrixNormalization
+from eeg_bloom_template.utils.orthonormalization import TokenDataGenerator, TokenMatrixNormalization, normalize_cached
 
 
 class DummyTokenDataGenerator(TokenDataGenerator):
@@ -71,3 +71,15 @@ class UtilsTestCase(unittest.TestCase):
         matrix = generator.generate_matrix(4)
 
         self.assertEqual(matrix.shape, (4, 4))
+
+    def test_cached_result_same(self):
+        token = ''.join(random.choice(string.ascii_lowercase) for _ in range(32))
+        generator = TokenDataGenerator(token)
+        normalizer = TokenMatrixNormalization(generator)
+        test_data = np.ones((2,))
+
+        result_a = normalizer.normalize(test_data)
+        result_b = normalize_cached(token, test_data)
+
+        for actual, expected in zip(result_a, result_b):
+            self.assertEqual(actual, expected)
